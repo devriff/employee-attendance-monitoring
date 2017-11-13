@@ -20,7 +20,7 @@ class M_attendance extends CI_Model {
     ->select('*')
     ->from('attendance')
     ->where('emp_id', $data['emp_id'])
-    ->where('date', $data['date'])
+    // ->where('date', $data['date'])
     ->where('att_type', 'time in')
     ->get();
     return $query->result(); 
@@ -58,7 +58,7 @@ class M_attendance extends CI_Model {
             ->select('*')
             ->from('attendance')
             ->join('employees', 'employees.emp_id = attendance.emp_id')
-            ->where('attendance.date', $date)
+            // ->where('attendance.date', $date)
             ->where('attendance.att_type', 'time in')
             ->order_by('attendance.id', 'ASC')
             ->get();
