@@ -9,9 +9,9 @@ class MY_PrivateController Extends CI_Controller
     parent::__construct();
     $this->view_data['page_title'] = 'EA MONITORING';
     $this->view_data['system_message'] =$this->_msg();
-    if (!$this->session->userdata('_t')) {
-      redirect('/EamAdmin');
-    }
+    // if (!$this->session->userdata('_t')) {
+    //   redirect('/EamAdmin');
+    // }
   }
   
   public function _output($output){
