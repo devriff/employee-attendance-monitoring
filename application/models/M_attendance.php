@@ -85,32 +85,28 @@ class M_attendance extends CI_Model {
 
   public function _dtr($emp_id = FALSE){
     $query = $this->db
-            ->select('final_attendance.emp_id, date, GROUP_CONCAT(DISTINCT time_in SEPARATOR "") as t_in, GROUP_CONCAT(DISTINCT time_out SEPARATOR "") as t_out')
+            ->select('final_attendance.emp_id, date, time_in, time_out')
             ->from('final_attendance')
             ->join('employees', 'employees.emp_id = final_attendance.emp_id')
             ->where('final_attendance.emp_id', $emp_id)
-            ->order_by('final_attendance.date', 'ASC')
-            ->group_by('final_attendance.date')
             ->limit(25)
             ->get();
     return $query->result();
   }
 
   public function _filter_dtr($data = FALSE){
-    $query = "SELECT emp_id, date, GROUP_CONCAT(DISTINCT time_in SEPARATOR '') as t_in, GROUP_CONCAT(DISTINCT time_out SEPARATOR '') as t_out
+    $query = "SELECT emp_id, date, time_in, time_out
     FROM final_attendance
     WHERE emp_id = ? 
     AND date
-    BETWEEN ? and ?
-    GROUP BY date
-    ORDER BY date ASC";
+    BETWEEN ? and ?";
     $result = $this->db->query($query,[$data['emp_id'], $data['start_date'], $data['end_date']]);
     return $result->num_rows() >= 1 ? $result->result() : FALSE; 
   }
 
   public function _get_timein_timeout($data = FALSE) {
     $query = $this->db
-    ->select('*')
+    ->select('attendance.emp_id, date, GROUP_CONCAT(DISTINCT time_in SEPARATOR "") as t_in, GROUP_CONCAT(DISTINCT time_out SEPARATOR "") as t_out')
     ->from('attendance')
     ->where('emp_id', $data['emp_id'])
     ->where('date', $data['date'])
@@ -121,9 +117,8 @@ class M_attendance extends CI_Model {
   public function _save_attendance($data = FALSE) {
     $save_data['emp_id'] = $data->emp_id;
     $save_data['date'] = $data->date;
-    $save_data['time_in'] = $data->time_in;
-    $save_data['time_out'] = $data->time_out;
-    $save_data['att_type'] = $data->att_type;
+    $save_data['time_in'] = $data->t_in;
+    $save_data['time_out'] = $data->t_out;
     $this->db->insert('final_attendance', $save_data);
     return $this->db->affected_rows() >= 1 ? TRUE : FALSE;
   }

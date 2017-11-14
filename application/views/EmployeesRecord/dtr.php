@@ -29,17 +29,17 @@
           <tr>
             <td style="background: #222d32; color: #fff;"><?php echo $d->emp_id; ?></td>
             <td style="background: #222d32; color: #fff;"><?php echo date('M j, Y',strtotime($d->date)); ?></td>
-            <td style="background: #000; color: #fff;"><?php echo $d->t_in; ?></td>
-            <td style="background: red; color: #fff;"><?php echo $d->t_out; ?></td>
+            <td style="background: #000; color: #fff;"><?php echo $d->time_in; ?></td>
+            <td style="background: red; color: #fff;"><?php echo $d->time_out; ?></td>
             <td style="background: green; color: #fff;">
             <?php
-              $time_in = date('H:i',strtotime($d->t_in));
-              $time_out = date('H:i',strtotime($d->t_out));
+              $time_in = date('H:i',strtotime($d->time_in));
+              $time_out = date('H:i',strtotime($d->time_out));
               $in = new DateTime($time_in);
               $out = new DateTime($time_out);
               $hours = $in->diff($out)->format('%h');
               $minutes = $in->diff($out)->format('%i');
-              if ($d->t_out) {
+              if ($d->time_out) {
                 if ($hours >= 5) {
                   $minus_one_hour = $hours - 1;
                   echo $minus_one_hour.':'.$minutes;
