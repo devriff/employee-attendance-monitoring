@@ -72,4 +72,12 @@ class DailyAttendance extends CI_Controller {
       echo json_encode($message);
     }
   }
+
+  public function migrate () {
+    $this->load->model('M_attendance');
+    $data['get_data'] =  $this->M_attendance->_get_data();
+    foreach ($data['get_data'] as $key => $value) {
+      $this->M_attendance->_save_dtr($value);
+    }
+  }
 }
